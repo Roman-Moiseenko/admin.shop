@@ -8,7 +8,7 @@ definePageMeta({
 </script>
 
 <template>
-Категории Товаров
+Категории
 </template>
 
 <style scoped>
