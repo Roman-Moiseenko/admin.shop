@@ -21,8 +21,10 @@ export default defineNuxtConfig({
     },
   },
   ui: {
+
     mdc: true,
     content: true,
+
   },
 
 
