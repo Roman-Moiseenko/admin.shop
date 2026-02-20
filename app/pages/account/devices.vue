@@ -1,8 +1,13 @@
 <script lang="ts" setup>
+
+definePageMeta({
+  middleware: ['auth'],
+  layout: 'account',
+});
 const dayjs = useDayjs();
 const auth = useAuthStore();
 
-const { data, status, refresh } = useHttp<any>("devices");
+const { data, status, refresh } = useHttp<any>("auth/devices");
 const loading = computed(() => status.value === 'pending');
 
 const columns = [

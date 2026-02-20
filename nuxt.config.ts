@@ -11,7 +11,20 @@ export default defineNuxtConfig({
     server: {
       allowedHosts: ["localhost", "127.0.0.1"],
     },
+    css: {
+      preprocessorMaxWorkers: true,
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@use "~/assets/scss/_colors.scss" as *;',
+        },
+      },
+    },
   },
+  ui: {
+    mdc: true,
+    content: true,
+  },
+
 
   /**
    * Manually disable nuxt telemetry.
@@ -22,7 +35,7 @@ export default defineNuxtConfig({
   $development: {
     ssr: true,
     devtools: {
-      enabled: false,
+      enabled: true,
     },
   },
 
@@ -45,10 +58,18 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    'auth/verify': { ssr: false }
+    'auth/verify': { ssr: false },
+    '/auth/login': { appLayout: 'login'  },
+    '/account/devices': { appLayout: 'account'  },
+    '/account/general': { appLayout: 'account'  },
+
+
   },
 
-  css: ['~/assets/css/main.css'],
+  css: [
+      '~/assets/scss/main.scss',
+    '~/assets/css/main.css',
+  ],
 
   /**
    * @see https://v3.nuxtjs.org/api/configuration/nuxt.config#modules
@@ -104,7 +125,7 @@ export default defineNuxtConfig({
       providers: {
         google: {
           name: "Google",
-          icon: "",
+          icon: "i-simple-icons-google",
           color: "neutral",
           variant: "soft",
         },

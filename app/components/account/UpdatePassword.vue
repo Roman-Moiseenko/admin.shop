@@ -11,7 +11,7 @@ const state = reactive({
   password_confirmation: "",
 });
 
-const { refresh: onSubmit, status: accountPasswordStatus } = useHttp<any>("account/password", {
+const { refresh: onSubmit, status: accountPasswordStatus } = useHttp<any>("auth/account/password", {
   method: "POST",
   body: state,
   immediate: false,
@@ -33,7 +33,7 @@ const { refresh: onSubmit, status: accountPasswordStatus } = useHttp<any>("accou
   }
 });
 
-const { refresh: sendResetPasswordEmail, status: resetPasswordEmailStatus } = useHttp<any>("forgot-password", {
+const { refresh: sendResetPasswordEmail, status: resetPasswordEmailStatus } = useHttp<any>("auth/forgot-password", {
   method: "POST",
   body: { email: auth.user.email },
   immediate: false,

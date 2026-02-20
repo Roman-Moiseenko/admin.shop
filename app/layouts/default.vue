@@ -1,14 +1,17 @@
 <script lang="ts" setup>
+definePageMeta({
+  middleware: ['auth'],
+});
 
-const route = useRoute()
-const layout = (route.name == 'auth-login' || route.name == undefined)  ? 'tologin' : 'auth';
-
-console.log("default") //:name="layout"
+console.log("default")
 </script>
 
 <template>
+  <AppHeader />
+  <UContainer as="main" class="flex-grow max-w-7xl py-4 sm:py-7 flex flex-col">
+    <slot/>
+  </UContainer>
 
-  <slot  />
+  <AppFooter />
 
-  <NuxtLoadingIndicator class="!opacity-100" :throttle="0" />
 </template>

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 definePageMeta({
   middleware: ["auth"],
-  layout: 'auth',
 });
 const dayjs = useDayjs();
 const auth = useAuthStore();

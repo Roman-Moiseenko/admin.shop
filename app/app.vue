@@ -1,16 +1,16 @@
 <script lang="ts" setup>
+const route = useRoute()
+const layout = (route.name == 'auth-login' || route.name == undefined)  ? 'tologin' : 'auth';
+
+//console.log(route.name, layout)
+// :name="layout"
 </script>
 
 <template>
   <UApp>
-    <AppHeader />
-
-    <UContainer as="main" class="flex-grow py-4 sm:py-7 flex flex-col">
-      <NuxtPage />
-    </UContainer>
-
-    <AppFooter />
-
+    <NuxtLayout >
+      <NuxtPage/>
+    </NuxtLayout>
     <NuxtLoadingIndicator class="!opacity-100" :throttle="0" />
   </UApp>
 </template>

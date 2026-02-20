@@ -12,7 +12,7 @@ const state = reactive({
   password_confirmation: "",
 });
 
-const { refresh: onSubmit, status: registerStatus } = useHttp<any>("register", {
+const { refresh: onSubmit, status: registerStatus } = useHttp<any>("auth/register", {
   method: "POST",
   body: state,
   immediate: false,

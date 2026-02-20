@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { Form, ButtonProps } from "#ui/types";
 import type { AuthProviders } from "~";
+//import * as z from 'zod'
+import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
 const config = useRuntimeConfig();
 const router = useRouter();
@@ -14,7 +16,7 @@ const state = reactive({
   remember: false,
 });
 
-const { refresh: onSubmit, status: loginStatus } = useHttp<any>("login", {
+const { refresh: onSubmit, status: loginStatus } = useHttp<any>("auth/login", {
   method: "POST",
   body: state,
   immediate: false,
@@ -72,6 +74,7 @@ function loginVia(provider: string): void {
 
 onMounted(() => window.addEventListener("message", handleMessage));
 onBeforeUnmount(() => window.removeEventListener("message", handleMessage));
+const show = ref(false)
 </script>
 
 <template>
@@ -107,7 +110,26 @@ onBeforeUnmount(() => window.removeEventListener("message", handleMessage));
       </UFormField>
 
       <UFormField label="Password" name="password" required>
-        <UInput v-model="state.password" type="password" class="w-full" placeholder="••••••••" />
+        <UInput
+            v-model="state.password"
+            class="w-full"
+            placeholder="••••••••"
+            :type="show ? 'text' : 'password'"
+        >
+        <template #trailing>
+          <UButton
+              color="neutral"
+              variant="link"
+              size="sm"
+              :icon="show ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+              :aria-label="show ? 'Hide password' : 'Show password'"
+              :aria-pressed="show"
+              aria-controls="password"
+              @click="show = !show" />
+
+        </template>
+
+        </UInput>
       </UFormField>
 
       <UTooltip :delay-duration="0" text="for 1 month" :content="{ side: 'right', align: 'center' }">
@@ -117,14 +139,11 @@ onBeforeUnmount(() => window.removeEventListener("message", handleMessage));
       </UTooltip>
 
       <div class="flex items-center justify-end space-x-4">
-        <NuxtLink class="text-sm" to="/auth/forgot">Forgot your password?</NuxtLink>
-        <UButton type="submit" label="Login" :loading="loginStatus === 'pending'" />
+
+        <UButton type="submit" size="xl" label="Login" class="w-full" :loading="loginStatus === 'pending'" />
       </div>
     </UForm>
 
-    <div class="text-sm">
-      Don't have an account yet?
-      <NuxtLink class="text-sm" to="/auth/register">Sign up now</NuxtLink>
-    </div>
+
   </div>
 </template>

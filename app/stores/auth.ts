@@ -30,18 +30,18 @@ export const useAuthStore = defineStore('auth', () => {
 
   const user = ref(<User>{});
 
-  const { refresh: logout } = useHttp<any>('logout', {
+  const { refresh: logout } = useHttp<any>('auth/logout', {
     method: 'POST',
     immediate: false,
     onFetchResponse: ({ response }) => {
       if (response.status === 200) {
         reset();
-        navigateTo('/');
+        navigateTo('/auth/login');
       }
     }
   });
 
-  const { refresh: fetchUser } = useHttp<any>('user', {
+  const { refresh: fetchUser } = useHttp<any>('auth/user', {
     immediate: false,
     onFetchResponse({ response }) {
       if (response.status === 200) {

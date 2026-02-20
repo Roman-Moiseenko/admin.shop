@@ -13,7 +13,7 @@ const state = reactive({
   },
 });
 
-const { refresh: sendEmailVerification, status: resendEmailStatus } = useHttp<any>("verification-notification", {
+const { refresh: sendEmailVerification, status: resendEmailStatus } = useHttp<any>("auth/verification-notification", {
   method: "POST",
   body: { email: state.email },
   immediate: false,
