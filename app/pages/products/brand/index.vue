@@ -2,13 +2,13 @@
 definePageMeta({
   middleware: ['auth'],
 });
-//const { categories, status, refresh } = useHttp<any>("products/category");
-//const loading = computed(() => status.value === 'pending');
-
+const { data, status, refresh } = useHttp<any>("products/brand");
+const loading = computed(() => status.value === 'pending');
+console.log(data.value)
 </script>
 
 <template>
-Категории
+ Бренды
 </template>
 
 <style scoped>

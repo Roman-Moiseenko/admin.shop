@@ -37,139 +37,137 @@ const items = [
     active: true,
     children: [
       {
+        label: 'Товары',
+        description: 'Номенклатура товаров магазина',
+        icon: 'i-lucide-package-open',
+        to: "/products/product",
+      },
+      {
         label: 'Категории',
         description: 'Каталог всех категорий',
         icon: 'i-lucide-folder-tree',
         to: "/products/category",
       },
+
+      {
+        label: 'Атрибуты',
+        description: 'Атрибуты категорий',
+        icon: 'i-lucide-combine',
+        to: "/products/attribute",
+      },
+      {
+        label: 'Метки',
+        description: 'Список тегов (меток) товаров',
+        icon: 'i-lucide-tags',
+        to: "/products/tag",
+      },
+      {
+        label: 'Бренды',
+        description: 'Список брендов товаров',
+        icon: 'i-lucide-copyright',
+        to: "/products/brand",
+      },
+      {
+        label: 'Параметры',
+        description: 'Текстовые параметры для категорий, групп и товаров',
+        icon: 'i-lucide-variable',
+        to: "/products/parameter",
+      },
     ]
   },
   {
-    label: 'Guide',
-    icon: 'i-lucide-book-open',
+    label: "Sales",
+    icon: 'i-lucide-coins',
     children: [
       {
-        label: 'Nuxt.js Docs',
-        description: 'Nuxt aims to simplify and optimize web dev with great developer experience.',
-        icon: 'i-simple-icons:nuxt',
-        to: "https://nuxt.com/docs/getting-started/introduction",
-        target: "_blank",
+        label: 'Orders',
+        description: 'Текущие заказы',
+        icon: 'i-lucide-shopping-cart',
+        to: "/",
       },
       {
-        label: 'Nuxt UI v3 Docs',
-        description: 'Nuxt UI library: Styled, accessible, customizable components for web apps.',
-        icon: 'i-simple-icons:nuxt',
-        to: "https://ui.nuxt.com/getting-started",
-        target: "_blank",
+        label: 'Users',
+        description: 'Клиенты магазина',
+        icon: 'i-lucide-users',
+        to: "/",
       },
       {
-        label: 'Laravel 12.x',
-        description: 'Laravel is a web application framework with expressive, elegant syntax.',
-        icon: 'i-simple-icons:laravel',
-        to: "https://laravel.com/docs/12.x",
-        target: "_blank",
+        label: 'Arhive',
+        description: 'Архив заказов (выполненные или отмененные)',
+        icon: 'i-lucide-archive',
+        to: "/",
       },
-      {
-        label: 'Tailwind CSS 4',
-        icon: 'i-simple-icons:tailwindcss',
-        description: 'Rapidly build modern websites without ever leaving your HTML.',
-        to: "https://tailwindcss.com/docs",
-        target: "_blank",
-      }
-    ]
+    ],
   },
+
   {
-    label: 'UI Components',
-    icon: 'i-lucide-box',
-    to: 'https://ui.nuxt.com/components',
-    target: "_blank",
+    label: 'Settings',
+    icon: 'i-lucide-settings',
     children: [
       {
-        label: 'Link',
-        icon: 'i-lucide-file-text',
-        description: 'Use NuxtLink with superpowers.',
-        to: 'https://ui.nuxt.com/components/link',
-        target: "_blank",
+        label: 'Common',
+        //description: 'Текущие заказы',
+      //  icon: 'i-lucide-shopping-cart',
+        to: "/",
       },
       {
-        label: 'Modal',
-        icon: 'i-lucide-file-text',
-        description: 'Display a modal within your application.',
-        to: 'https://ui.nuxt.com/components/modal',
-        target: "_blank",
+        label: 'Website',
+        //description: 'Текущие заказы',
+        //  icon: 'i-lucide-shopping-cart',
+        to: "/",
       },
       {
-        label: 'NavigationMenu',
-        icon: 'i-lucide-file-text',
-        description: 'Display a list of links.',
-        to: 'https://ui.nuxt.com/components/navigation-menu',
-        target: "_blank",
+        label: 'Email',
+        //description: 'Текущие заказы',
+        //  icon: 'i-lucide-shopping-cart',
+        to: "/",
       },
       {
-        label: 'Pagination',
-        icon: 'i-lucide-file-text',
-        description: 'Display a list of pages.',
-        to: 'https://ui.nuxt.com/components/pagination',
-        target: "_blank",
+        label: 'Images',
+        //description: 'Текущие заказы',
+        //  icon: 'i-lucide-shopping-cart',
+        to: "/",
       },
       {
-        label: 'Popover',
-        icon: 'i-lucide-file-text',
-        description: 'Display a non-modal dialog that floats around a trigger element.',
-        to: 'https://ui.nuxt.com/components/popover',
-        target: "_blank",
+        label: 'Guide',
+        //description: 'Текущие заказы',
+        //  icon: 'i-lucide-shopping-cart',
+        to: "/",
       },
-      {
-        label: 'Progress',
-        icon: 'i-lucide-file-text',
-        description: 'Show a horizontal bar to indicate task progression.',
-        to: 'https://ui.nuxt.com/components/progress',
-        target: "_blank",
-      }
-    ]
+    ],
   },
   {
-    label: 'UI Composables',
-    icon: 'i-lucide-database',
-    to: 'https://ui.nuxt.com/composables',
-    target: "_blank",
+    label: 'WebSite',
+    icon: 'i-lucide-globe',
     children: [
       {
-        label: 'defineShortcuts',
-        icon: 'i-lucide-file-text',
-        description: 'Define shortcuts for your application.',
-        to: 'https://ui.nuxt.com/composables/define-shortcuts',
-        target: "_blank",
+        label: 'Pages',
+        //description: 'Текущие заказы',
+        //  icon: 'i-lucide-shopping-cart',
+        to: "/",
       },
       {
-        label: 'useModal',
-        icon: 'i-lucide-file-text',
-        description: 'Display a modal within your application.',
-        to: 'https://ui.nuxt.com/composables/use-modal',
-        target: "_blank",
+        label: 'Menu',
+        //description: 'Текущие заказы',
+        //  icon: 'i-lucide-shopping-cart',
+        to: "/",
       },
-      {
-        label: 'useSlideover',
-        icon: 'i-lucide-file-text',
-        description: 'Display a slideover within your application.',
-        to: 'https://ui.nuxt.com/composables/use-slideover',
-        target: "_blank",
-      },
-      {
-        label: 'useToast',
-        icon: 'i-lucide-file-text',
-        description: 'Display a toast within your application.',
-        to: 'https://ui.nuxt.com/composables/use-toast',
-        target: "_blank",
-      }
     ]
   },
+
   {
-    label: 'GitHub',
-    icon: 'i-simple-icons-github',
-    to: 'https://github.com/k2so-dev/laravel-nuxt',
-    target: '_blank'
+    label: 'Feedback',
+    icon: 'i-lucide-messages-square',
+
+    children: [
+      {
+        label: 'Email',
+        icon: 'i-lucide-mail',
+      },
+
+    ]
   },
+
   {
     label: 'Help',
     icon: 'i-lucide-circle-help',
