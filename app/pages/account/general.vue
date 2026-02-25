@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 definePageMeta({
   middleware: ['auth'],
-  layout: 'account',
 });
 useSeoMeta({
   title: 'Account',

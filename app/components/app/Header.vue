@@ -107,7 +107,7 @@ const items = [
       {
         label: 'Common',
         //description: 'Текущие заказы',
-      //  icon: 'i-lucide-shopping-cart',
+        //  icon: 'i-lucide-shopping-cart',
         to: "/",
       },
       {

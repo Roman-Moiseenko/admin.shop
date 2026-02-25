@@ -1,4 +1,5 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+</script>
 <template>
   <footer
     class="bg-background/75 border-t border-dashed border-gray-200/80 dark:border-gray-800/80"

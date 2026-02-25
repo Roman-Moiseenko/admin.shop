@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import type {TableColumn} from "#ui/components/Table.vue";
 import {ElementActive} from "#components";
+import UDeleteEntityModal from "~/composables/UDeleteEntityModal.vue";
+import { useDeleteEntity } from '~/composables/useDeleteEntity';
 
 definePageMeta({
   middleware: ['auth'],
 });
-
+useHead({
+  title: "Текстовые параметры"
+})
 const {data, status, refresh: OnReloadParameters} = useHttp<any>("products/parameter");
 const loading = computed(() => status.value === 'pending');
-
+/*
 watch(status, async (n, q) => {
   if (n === 'success') console.log(data.value)
 })
-
+*/
 
 const columns: TableColumn<any>[] = [
   {
@@ -69,13 +73,15 @@ const getInitialFormState = () => ({
 });
 
 const form = ref(getInitialFormState())
+const { showModal } = useDeleteEntity();
+async function delParameter(id: Number) {
 
-function delParameter(id) {
-  console.log("Удалить", id)
+  showModal(`products/parameter/${id}`).then(resolve => {
+    OnReloadParameters()
+  });
+
 }
-useHead({
-  title: "Текстовые параметры"
-})
+
 
 function handleUpdate(row) {
   form.value = {...row.original}
@@ -106,13 +112,16 @@ function createParameter() {
         }
       }
   );
-
 }
-
+/*
+class="cursor-pointer" @select="onSelect"
+function onSelect(e: Event, row: TableRow<any>) {
+  handleUpdate(row)
+}*/
 </script>
 
 <template>
-  Параметры
+  <h1 class="mb-3 font-600 text-3xl">Параметры текстовые</h1>
   <div>
     <UButton label="Добавить параметр" color="secondary" @click="handleCreate"/>
   </div>
@@ -133,8 +142,6 @@ function createParameter() {
       </UButton>
     </template>
   </UTable>
-
-
   <UModal v-model:open="showDialog" title="Текстовый параметр" :dismissible="false">
     <template #body>
       <UFormField label="Параметр">
@@ -154,10 +161,13 @@ function createParameter() {
       <UButton label="Отмена" color="neutral" variant="outline" @click="showDialog = false"/>
       <UButton v-if="form.id === null" label="Добавить" color="neutral" @click="createParameter"/>
       <UButton v-else label="Сохранить" color="neutral" @click="updateParameter"/>
-
     </template>
   </UModal>
-
+  <UDeleteEntityModal name_entity="текстовый параметр" >
+    <p>
+      При удалении параметра, на всех страницах исчезнут данные по нему.
+    </p>
+  </UDeleteEntityModal>
 </template>
 
 <style scoped>

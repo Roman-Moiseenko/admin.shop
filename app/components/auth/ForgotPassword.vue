@@ -8,7 +8,7 @@ const state = reactive({
   email: "",
 });
 
-const { refresh: onSubmit, status: forgotStatus } = useHttp<any>("auth/forgot-password", {
+const { refresh: onSubmit, status: forgotStatus } = useHttp<any>("forgot-password", {
   method: "POST",
   body: state,
   immediate: false,

@@ -16,6 +16,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       authHeaders['X-XSRF-TOKEN'] = xsrf.value;
     } else if (config.public.authGuard === 'api' && auth.token) {
       authHeaders['Authorization'] = `Bearer ${auth.token}`;
+      authHeaders['X-XSRF-TOKEN'] = xsrf.value;
     }
 
     return {

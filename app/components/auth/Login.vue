@@ -2,7 +2,6 @@
 import type { Form, ButtonProps } from "#ui/types";
 import type { AuthProviders } from "~";
 //import * as z from 'zod'
-import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
 const config = useRuntimeConfig();
 const router = useRouter();
@@ -59,9 +58,9 @@ function loginVia(provider: string): void {
   const top = window.screen.height / 2 - height / 2;
 
   const popup = window.open(
-    `${config.public.apiBase}${config.public.apiPrefix}/login/${provider}/redirect`,
-    "Sign In",
-    `toolbar=no, location=no, directories=no, status=no, menubar=no, scollbars=no, resizable=no, copyhistory=no, width=${width},height=${height},top=${top},left=${left}`
+      `${config.public.apiBase}${config.public.apiPrefix}/login/${provider}/redirect`,
+      "Sign In",
+      `toolbar=no, location=no, directories=no, status=no, menubar=no, scollbars=no, resizable=no, copyhistory=no, width=${width},height=${height},top=${top},left=${left}`
   );
 
   const interval = setInterval(() => {
@@ -81,16 +80,16 @@ const show = ref(false)
   <div class="space-y-4">
     <div class="flex gap-4">
       <UButton
-        v-for="(provider, key) in providers"
-        :key="key"
-        :loading="provider.loading"
-        :icon="provider.icon"
-        :color="provider.color as ButtonProps['color']"
-        :variant="provider.variant as ButtonProps['variant']"
-        :label="provider.name"
-        size="lg"
-        class="w-full flex items-center justify-center"
-        @click="loginVia(key as string)"
+          v-for="(provider, key) in providers"
+          :key="key"
+          :loading="provider.loading"
+          :icon="provider.icon"
+          :color="provider.color as ButtonProps['color']"
+          :variant="provider.variant as ButtonProps['variant']"
+          :label="provider.name"
+          size="lg"
+          class="w-full flex items-center justify-center"
+          @click="loginVia(key as string)"
       />
     </div>
 
@@ -99,13 +98,13 @@ const show = ref(false)
     <UForm ref="form" :state="state" @submit="onSubmit" class="space-y-4">
       <UFormField label="Email" name="email" required>
         <UInput
-          v-model="state.email"
-          class="w-full"
-          placeholder="you@example.com"
-          icon="i-heroicons-envelope"
-          trailing
-          type="email"
-          autofocus
+            v-model="state.email"
+            class="w-full"
+            placeholder="you@example.com"
+            icon="i-heroicons-envelope"
+            trailing
+            type="email"
+            autofocus
         />
       </UFormField>
 
@@ -116,18 +115,18 @@ const show = ref(false)
             placeholder="••••••••"
             :type="show ? 'text' : 'password'"
         >
-        <template #trailing>
-          <UButton
-              color="neutral"
-              variant="link"
-              size="sm"
-              :icon="show ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-              :aria-label="show ? 'Hide password' : 'Show password'"
-              :aria-pressed="show"
-              aria-controls="password"
-              @click="show = !show" />
+          <template #trailing>
+            <UButton
+                color="neutral"
+                variant="link"
+                size="sm"
+                :icon="show ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                :aria-label="show ? 'Hide password' : 'Show password'"
+                :aria-pressed="show"
+                aria-controls="password"
+                @click="show = !show" />
 
-        </template>
+          </template>
 
         </UInput>
       </UFormField>

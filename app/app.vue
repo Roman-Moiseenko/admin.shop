@@ -1,9 +1,4 @@
 <script lang="ts" setup>
-const route = useRoute()
-const layout = (route.name == 'auth-login' || route.name == undefined)  ? 'tologin' : 'auth';
-
-//console.log(route.name, layout)
-// :name="layout"
 </script>
 
 <template>

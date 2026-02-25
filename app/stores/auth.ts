@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
     onFetchResponse: ({ response }) => {
       if (response.status === 200) {
         reset();
-        navigateTo('/auth/login');
+        navigateTo('/');
       }
     }
   });

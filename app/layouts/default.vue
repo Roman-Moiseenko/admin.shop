@@ -1,9 +1,10 @@
 <script lang="ts" setup>
+import UDeleteEntityModal from "~/composables/UDeleteEntityModal.vue";
+
 definePageMeta({
   middleware: ['auth'],
 });
 
-console.log("default")
 </script>
 
 <template>

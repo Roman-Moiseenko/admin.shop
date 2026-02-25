@@ -11,20 +11,13 @@ export default defineNuxtConfig({
         server: {
             allowedHosts: ["localhost", "127.0.0.1"],
         },
-        css: {
-            preprocessorMaxWorkers: true,
-            preprocessorOptions: {
-                scss: {
-                    additionalData: '@use "~/assets/scss/_colors.scss" as *;',
-                },
-            },
-        },
+
     },
+
     ui: {
         mdc: true,
         content: true,
     },
-
 
     /**
      * Manually disable nuxt telemetry.
@@ -33,14 +26,14 @@ export default defineNuxtConfig({
     telemetry: true,
 
     $development: {
-        ssr: false,
+        ssr: true,
         devtools: {
             enabled: true,
         },
     },
 
     $production: {
-        ssr: false,
+        ssr: true,
     },
 
     app: {
@@ -56,18 +49,17 @@ export default defineNuxtConfig({
             ],
         },
     },
-
+    router: {
+     //   middleware: ['auth']
+    },
     routeRules: {
         'auth/verify': {ssr: false},
-        '/auth/login': {appLayout: 'login'},
-        '/account/devices': {appLayout: 'account'},
-        '/account/general': {appLayout: 'account'},
-
-
+        'auth/login': {appLayout: 'login'},
+        'account/devices': {appLayout: 'account'},
+        'account/general': {appLayout: 'account'},
     },
 
     css: [
-        '~/assets/scss/main.scss',
         '~/assets/css/main.css',
     ],
 
