@@ -8,7 +8,7 @@ definePageMeta({
 </script>
 
 <template>
- Бренды
+ Товары
 </template>
 
 <style scoped>
