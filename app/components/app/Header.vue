@@ -73,7 +73,8 @@ const items = [
         icon: 'i-lucide-variable',
         to: "/products/parameter",
       },
-    ]
+    ],
+    disabled: !auth.can('view product')
   },
   {
     label: "Sales",
@@ -98,6 +99,7 @@ const items = [
         to: "/",
       },
     ],
+    disabled: !auth.can('view order')
   },
 
   {
@@ -135,6 +137,7 @@ const items = [
         to: "/",
       },
     ],
+    disabled: !auth.can('view settings')
   },
   {
     label: 'WebSite',
@@ -152,7 +155,8 @@ const items = [
         //  icon: 'i-lucide-shopping-cart',
         to: "/",
       },
-    ]
+    ],
+    disabled: !auth.can('view web')
   },
 
   {
@@ -165,7 +169,8 @@ const items = [
         icon: 'i-lucide-mail',
       },
 
-    ]
+    ],
+    disabled: !auth.can('view feed')
   },
 
   {

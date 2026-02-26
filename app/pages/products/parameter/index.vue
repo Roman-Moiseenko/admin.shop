@@ -10,6 +10,7 @@ definePageMeta({
 useHead({
   title: "Текстовые параметры"
 })
+const auth = useAuthStore();
 const {data, status, refresh: OnReloadParameters} = useHttp<any>("products/parameter");
 const loading = computed(() => status.value === 'pending');
 /*
@@ -62,6 +63,7 @@ const columns: TableColumn<any>[] = [
   }
 ]
 const showDialog = ref(false)
+
 const getInitialFormState = () => ({
   id: null,
   name: null,
@@ -81,7 +83,6 @@ async function delParameter(id: Number) {
   });
 
 }
-
 
 function handleUpdate(row) {
   form.value = {...row.original}
@@ -126,7 +127,14 @@ function onSelect(e: Event, row: TableRow<any>) {
     <UButton label="Добавить параметр" color="secondary" @click="handleCreate"/>
   </div>
 
-  <UTable :data="data" :columns="columns" class="flex-1" :disabled="loading">
+  <UTable :data="data" :columns="columns" class="flex-1" :disabled="loading"
+          :loading="loading"
+          loading-color="primary"
+          loading-animation="carousel"
+          :ui="{
+            td: 'p-2 text-sm text-muted whitespace-nowrap [&:has([role=checkbox])]:pe-0'
+          }"
+  >
     <template #action-cell="{ row }">
       <UButton @click="handleUpdate(row)"
                color="neutral"
@@ -134,7 +142,7 @@ function onSelect(e: Event, row: TableRow<any>) {
       >
         <UIcon name="i-lucide-pencil" class="text-green-600"/>
       </UButton>
-      <UButton @click="delParameter(row.getValue('id'))"
+      <UButton @click="delParameter(row.getValue('id'))" v-if="auth.can('delete product')"
                color="neutral"
                variant="ghost"
       >
@@ -159,8 +167,8 @@ function onSelect(e: Event, row: TableRow<any>) {
     </template>
     <template #footer="{ close }">
       <UButton label="Отмена" color="neutral" variant="outline" @click="showDialog = false"/>
-      <UButton v-if="form.id === null" label="Добавить" color="neutral" @click="createParameter"/>
-      <UButton v-else label="Сохранить" color="neutral" @click="updateParameter"/>
+      <UButton v-if="form.id === null && auth.can('create product')" label="Добавить" color="neutral" @click="createParameter"/>
+      <UButton v-if="form.id !== null && auth.can('edit product')" label="Сохранить" color="neutral" @click="updateParameter"/>
     </template>
   </UModal>
   <UDeleteEntityModal name_entity="текстовый параметр" >
@@ -171,5 +179,7 @@ function onSelect(e: Event, row: TableRow<any>) {
 </template>
 
 <style scoped>
-
+.tdClass {
+  padding: 2px;
+}
 </style>

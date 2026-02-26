@@ -9,6 +9,7 @@ export type User = {
   has_password: boolean;
   roles: string[];
   providers: string[];
+  permissions: string[];
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -80,6 +81,9 @@ export const useAuthStore = defineStore('auth', () => {
     return (user.value.roles ?? []).includes(name);
   }
 
+  function can(name: string): boolean {
+    return (user.value.permissions ?? []).includes(name);
+  }
   return {
     user,
     token: tokenCookie,
@@ -90,5 +94,6 @@ export const useAuthStore = defineStore('auth', () => {
     fetchCsrf,
     reset,
     hasRole,
+    can,
   }
 })
