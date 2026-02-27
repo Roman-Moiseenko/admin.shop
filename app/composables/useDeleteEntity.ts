@@ -2,7 +2,7 @@ import { computed } from 'vue';
 
 let _instance: ReturnType<typeof _createDeleteEntityComposable> | null = null;
 let _current_state: ReturnType<typeof useState<typeof initialDeleteEntityState>> | null = null;
-// Определение начального состояния (для типизации и инициализации useState)
+
 const initialDeleteEntityState = {
     name: '', // Имя модального окна (для идентификации, если их несколько)
     resolve: null as ((value?: boolean | PromiseLike<boolean>) => void) | null,

@@ -1,45 +1,43 @@
 <script setup lang="ts">
-
-import {ElementActive} from "#components";
+import * as z from 'zod'
 import UDeleteEntityModal from "~/composables/UDeleteEntityModal.vue";
-import { useDeleteEntity } from '~/composables/useDeleteEntity';
+import type {FormSubmitEvent} from "#ui/types";
+import {type CategoryCreate, useCategoriesStore} from "~/stores/categories";
+
 definePageMeta({
   middleware: ['auth'],
 });
 useHead({
   title: "Категории товаров"
 })
-const { data: categories, status: statusCategories, refresh: refreshCategories } = useHttp<any>("products/category");
-const { data: list, status: statusList, refresh: refreshList } = useHttp<any>("products/category/list");
-const loading = computed(() => statusCategories.value === 'pending');
 
-watch(statusCategories, async (n, q) => {
-  if (n === 'success') console.log(categories.value)
-})
-const getInitialFormState = () => ({
+const storeCategory = useCategoriesStore()
+
+
+type Schema = z.output<typeof schema>
+
+const getInitialFormState = () => (<CategoryCreate>{
   name: null,
   slug: null,
   parent_id: null,
 });
 const form = ref(getInitialFormState())
-const { showModal } = useDeleteEntity();
+
 const showDialog = ref(false)
+
+const schema = z.object({
+  name: z.string('Поле обязательно'),
+})
+
+const formModal = useTemplateRef('formModal')
+
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  storeCategory.create(form.value)
+}
 
 function handleCreate() {
   form.value = getInitialFormState()
   showDialog.value = true
-}
-function createCategory() {
-  useHttp<any>("products/category", {
-        method: "post",
-        body: form.value,
-        async onFetchResponse({response}) {
-          await refreshCategories()
-          showDialog.value = false
-          refreshList()
-        }
-      }
-  );
 }
 </script>
 
@@ -49,27 +47,28 @@ function createCategory() {
     <UButton label="Добавить категорию" color="secondary" @click="handleCreate"/>
   </div>
 
-  <ProductCategoryChildren :categories="categories" />
+  <ProductCategoryItem v-for="category in storeCategory.categories" :key="category.id" :id="category.id" />
 
   <UModal v-model:open="showDialog" title="Добавить категорию" :dismissible="false">
     <template #body>
-      <UFormField label="Название">
+      <UForm :schema="schema" :state="form" ref="formModal" @submit="onSubmit">
+      <UFormField label="Название" name="name">
         <UInput v-model="form.name" class="w-full" required placeholder="Название категории"/>
       </UFormField>
       <UFormField label="Ссылка">
         <UInput v-model="form.slug" class="w-full" placeholder="Ссылка на категорию"/>
       </UFormField>
       <UFormField label="Родительская категория">
-        <USelectMenu :items="list" v-model="form.parent_id" clear label-key="name" value-key="id" class="w-full"/>
+        <USelectMenu :items="storeCategory.list" v-model="form.parent_id" clear label-key="name" value-key="id" class="w-full"/>
       </UFormField>
-
+      </UForm>
     </template>
     <template #footer="{ close }">
       <UButton label="Отмена" color="neutral" variant="outline" @click="showDialog = false"/>
-      <UButton label="Добавить" color="neutral" @click="createCategory"/>
+      <UButton label="Добавить" color="secondary" @click="formModal.submit()"/>
     </template>
   </UModal>
-  <UDeleteEntityModal name_entity="категорию" >
+  <UDeleteEntityModal name_entity="категорию">
     <p>
       Нельзя удалить категорию, которая является главной для хотя бы одного товара!
     </p>

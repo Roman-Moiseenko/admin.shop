@@ -1,9 +1,12 @@
 <script lang="ts" setup>
-import UDeleteEntityModal from "~/composables/UDeleteEntityModal.vue";
+import {useCategoriesStore} from "~/stores/categories";
 
 definePageMeta({
   middleware: ['auth'],
 });
+
+//Предварительная загрузка Stores
+useCategoriesStore()
 
 </script>
 
