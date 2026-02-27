@@ -24,13 +24,16 @@ const showChildren = computed(() => {
 function onUp() {
   storeCategory.up($props.id)
 }
+
 function onDown() {
   storeCategory.down($props.id)
 }
+
 function createChild() {
   storeCategory.create(form);
   visible_create.value = false
 }
+
 const showDelete = ref(false)
 
 function deleteCategory(v: Boolean) {
@@ -69,8 +72,10 @@ function deleteCategory(v: Boolean) {
             </span>
       </div>
       <div class="flex ml-5">
-        <UButton v-if="auth.can('edit product')" size="sm" color="secondary" icon="i-lucide-arrow-up" @click.stop="onUp()"></UButton>
-        <UButton v-if="auth.can('edit product')" size="sm" color="secondary" icon="i-lucide-arrow-down" @click.stop="onDown()"></UButton>
+        <UButton v-if="auth.can('edit product')" size="sm" color="secondary" icon="i-lucide-arrow-up"
+                 @click.stop="onUp()"></UButton>
+        <UButton v-if="auth.can('edit product')" size="sm" color="secondary" icon="i-lucide-arrow-down"
+                 @click.stop="onDown()"></UButton>
         <UPopover arrow v-model:open="visible_create">
           <UButton
               icon="i-lucide-folder-plus"
@@ -97,7 +102,11 @@ function deleteCategory(v: Boolean) {
     <ProductCategoryItem v-for="child in category.children" :key="child?.id" :id="child?.id"/>
   </div>
 
-  <ElementDeleteModal v-model="showDelete" name="категорию" @confirmation="deleteCategory" />
+  <ElementDeleteModal v-model="showDelete" name="категорию" @confirmation="deleteCategory">
+    <template #body>
+      Нельзя удалить категорию, которая является главной для хотя бы одного товара!
+    </template>
+  </ElementDeleteModal>
 
 
 </template>

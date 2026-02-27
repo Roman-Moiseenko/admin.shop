@@ -20,13 +20,15 @@ function confirmation()
 <template>
   <UModal v-model:open="model" :title="_soft ? 'Пометить на удаление' : 'Удалить запись'" width="400">
     <template #body>
+      <slot name="header" />
       <div class="font-medium text-md mt-2">
         Вы уверены, что хотите {{ _soft ? 'пометить на удаление' : 'удалить' }} {{ name }}?
       </div>
+      <slot name="body" />
       <div v-if="!_soft" class="text-red-600 text-md mt-2">
         Восстановить данные будет невозможно!
       </div>
-      <slot /> <!-- Для дополнительного контента, если нужен -->
+      <slot name="footer" />
     </template>
     <template #footer="{ close }">
       <div class="dialog-footer">

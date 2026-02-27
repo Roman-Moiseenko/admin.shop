@@ -66,20 +66,16 @@ export const useCategoriesStore = defineStore('categories', () => {
     function _findCategory(id: number, listCategories: Category[]) {
 
         //TODO Слишком много рекусрии, переделать на линейный массив
-        //console.log(id, listCategories)
         let index: number;
         for (index = 0; index < listCategories.length; ++index) {
             const category = listCategories[index];
-            //console.log(id, category.id)
             if (category.id === id) return category;
-           // console.log(id, category.children)
             //Ищем в дочерних
            if (category.children.length > 0) {
                const v = _findCategory(id, category.children)
                if (v !== null) return v;
            }
         }
-        //console.log(id, 'null')
         return null;
     }
 

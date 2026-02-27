@@ -6,6 +6,7 @@ import UDeleteEntityModal from "~/composables/UDeleteEntityModal.vue";
 import {useDeleteEntity} from '~/composables/useDeleteEntity';
 import type {FormSubmitEvent} from "#ui/types";
 import {Schema} from "zod/v3";
+import {type TextParameter, useParametersStore} from "~/stores/parameters";
 definePageMeta({
   middleware: ['auth'],
 });
@@ -14,15 +15,16 @@ useHead({
 })
 type Schema = z.output<typeof schema>
 const auth = useAuthStore();
-const {data, status, refresh: OnReloadParameters} = useHttp<any>("products/parameter");
-const loading = computed(() => status.value === 'pending');
+//const {data, status, refresh: OnReloadParameters} = useHttp<any>("products/parameter");
+//const loading = computed(() => status.value === 'pending');
+const storeParameters = useParametersStore()
 /*
 watch(status, async (n, q) => {
   if (n === 'success') console.log(data.value)
 })
 */
 
-const columns: TableColumn<any>[] = [
+const columns: TableColumn<TextParameter>[] = [
   {
     accessorKey: 'id',
     header: '#',
@@ -73,7 +75,7 @@ const schema = z.object({
   slug: z.string('Ссылка обязательна'),
 })
 
-const getInitialFormState = () => ({
+const getInitialFormState = () => (<TextParameter>{
   id: null,
   name: null,
   slug: null,
@@ -83,7 +85,10 @@ const getInitialFormState = () => ({
   is_product: false,
 });
 
-const form = ref(getInitialFormState())
+const form = ref<TextParameter>(getInitialFormState())
+
+const showDelete = ref(false)
+const id_delete = ref(0)
 
 function handleUpdate(row) {
   form.value = {...row.original}
@@ -95,57 +100,39 @@ function handleCreate() {
   showDialog.value = true
 }
 
-function updateParameter() {
-  useHttp<any>(`products/parameter/${form.value.id}`, {
-        method: "post",
-        body: form.value,
-        async onFetchResponse({response}) {
-          await OnReloadParameters()
-          showDialog.value = false
-        }
-      }
-  );
-}
-
-function createParameter() {
-  useHttp<any>("products/parameter", {
-        method: "post",
-        body: form.value,
-        async onFetchResponse({response}) {
-          await OnReloadParameters()
-          showDialog.value = false
-        },
-        onFetchError({response}) {
-          console.log(response)
-        }
-      }
-  );
-}
 const formModal = useTemplateRef('formModal')
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   if (form.value.id === null) {
-    createParameter()
+    storeParameters.create(form.value)
   } else {
-    updateParameter()
+    storeParameters.update(form.value.id, form.value)
   }
+  showDialog.value = false
 }
-const {showModal} = useDeleteEntity();
-async function handleDelete(id: Number) {
-  showModal(`products/parameter/${id}`).then(resolve => {
-    OnReloadParameters()
-  });
 
+function deleteParameter(v: boolean) {
+  if (v) storeParameters.remove(id_delete.value)
+  showDelete.value = false;
+  id_delete.value = 0;
+}
+
+function handleDelete(id: number) {
+  showDelete.value = true
+  id_delete.value = id;
 }
 </script>
 
 <template>
-  <h1 class="mb-3 font-600 text-3xl">Параметры текстовые</h1>
+  <h1 class="mb-3 font-600 text-3xl">
+    <UIcon name="i-lucide-variable"/>
+    Параметры текстовые
+  </h1>
   <div>
     <UButton label="Добавить параметр" color="secondary" @click="handleCreate"/>
   </div>
-  <UTable :data="data" :columns="columns" class="flex-1" :disabled="loading"
-          :loading="loading"
+  <UTable :data="storeParameters.parameters" :columns="columns" class="flex-1" :disabled="storeParameters.loading"
+          :loading="storeParameters.loading"
           loading-color="primary"
           loading-animation="carousel"
           :ui="{
@@ -199,12 +186,11 @@ async function handleDelete(id: Number) {
     </template>
   </UModal>
 
-
-  <UDeleteEntityModal name_entity="текстовый параметр">
-    <p>
+  <ElementDeleteModal v-model="showDelete" name="категорию" @confirmation="deleteParameter" >
+    <template #body>
       При удалении параметра, на всех страницах исчезнут данные по нему.
-    </p>
-  </UDeleteEntityModal>
+    </template>
+  </ElementDeleteModal>
 </template>
 
 <style scoped>
