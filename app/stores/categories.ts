@@ -15,6 +15,13 @@ export type CategoryCreate = {
     parent_id: number,
 }
 
+export type DataCategory = {
+    id: number;
+    data: object;
+    status: object;
+    refresh: object;
+}
+
 export const useCategoriesStore = defineStore('categories', () => {
 
     const toast = useToast();
@@ -24,6 +31,8 @@ export const useCategoriesStore = defineStore('categories', () => {
         refresh: refreshCategories
     } = useHttp<Category[]>("products/category");
     const {data: list, status: statusList, refresh: refreshList} = useHttp<any>("products/category/list");
+
+    const DataCategories = new Array<DataCategory>();
 
     async function reloadAndToast(status: number) {
         if (status === 200) {
@@ -132,7 +141,7 @@ export const useCategoriesStore = defineStore('categories', () => {
         categories,
         list,
         //reload,
-        findCategory,
+        //findCategory,
         getCategory,
 
         up,

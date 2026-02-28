@@ -1,32 +1,34 @@
 <script setup lang="ts">
-import type {CategoryCreate} from "~/stores/categories";
+import type {Category, CategoryCreate} from "~/stores/categories";
 
 const auth = useAuthStore();
 const storeCategory = useCategoriesStore()
 const $props = defineProps({
-  id: Number,
+  category: Object
 })
 
-const category = storeCategory.findCategory($props.id)
+
 const visible_create = ref(false)
 const form = reactive(<CategoryCreate>{
   name: '',
-  parent_id: $props.id,
+  parent_id: $props.category.id,
 })
 const checkChildren = ref(false)
+
 const isChildren = computed(() => {
-  return category.value && category.value.children.length > 0
+  return $props.category && $props.category.children.length > 0
 })
+
 const showChildren = computed(() => {
   return isChildren && checkChildren.value
 })
 
 function onUp() {
-  storeCategory.up($props.id)
+  storeCategory.up($props.category.id)
 }
 
 function onDown() {
-  storeCategory.down($props.id)
+  storeCategory.down($props.category.id)
 }
 
 function createChild() {
@@ -37,7 +39,7 @@ function createChild() {
 const showDelete = ref(false)
 
 function deleteCategory(v: Boolean) {
-  if (v) storeCategory.remove($props.id)
+  if (v) storeCategory.remove($props.category.id)
   showDelete.value = false;
 }
 
@@ -99,7 +101,7 @@ function deleteCategory(v: Boolean) {
     </template>
   </div>
   <div v-if="showChildren" class="pl-5 ml-2 mb-5 pb-2 pt-2">
-    <ProductCategoryItem v-for="child in category.children" :key="child?.id" :id="child?.id"/>
+    <ProductCategoryItem v-for="child in category.children" :key="child?.id" :category="child"/>
   </div>
 
   <ElementDeleteModal v-model="showDelete" name="категорию" @confirmation="deleteCategory">

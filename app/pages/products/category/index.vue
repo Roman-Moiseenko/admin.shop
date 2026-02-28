@@ -50,7 +50,7 @@ function handleCreate() {
     <UButton label="Добавить категорию" color="secondary" @click="handleCreate"/>
   </div>
 
-  <ProductCategoryItem v-for="category in storeCategory.categories" :key="category.id" :id="category.id"/>
+  <ProductCategoryItem v-for="category in storeCategory.categories" :key="category.id" :category="category"/>
 
   <UModal v-model:open="showDialog" title="Добавить категорию" :dismissible="false">
     <template #body>
