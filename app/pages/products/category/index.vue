@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import * as z from 'zod'
-import UDeleteEntityModal from "~/composables/UDeleteEntityModal.vue";
+
 import type {FormSubmitEvent} from "#ui/types";
-import {type CategoryCreate, useCategoriesStore} from "~/stores/categories";
+import {type CategoryCreate, useCategoriesStore} from "~/stores/products/categories";
 
 definePageMeta({
   middleware: ['auth'],

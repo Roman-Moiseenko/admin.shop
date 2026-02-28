@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import type {Category, CategoryCreate} from "~/stores/categories";
+
+
+import {type CategoryCreate, useCategoriesStore} from "~/stores/products/categories";
 
 const auth = useAuthStore();
 const storeCategory = useCategoriesStore()

@@ -6,7 +6,7 @@ import UDeleteEntityModal from "~/composables/UDeleteEntityModal.vue";
 import {useDeleteEntity} from '~/composables/useDeleteEntity';
 import type {FormSubmitEvent} from "#ui/types";
 import {Schema} from "zod/v3";
-import {type TextParameter, useParametersStore} from "~/stores/parameters";
+import {type TextParameter, useParametersStore} from "~/stores/products/parameters";
 definePageMeta({
   middleware: ['auth'],
 });

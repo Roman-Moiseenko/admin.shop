@@ -63,13 +63,21 @@ export const useCategoriesStore = defineStore('categories', () => {
     //Получить все данные по категории от сервера
     async function getCategory(id: number) {
         const cat = ref([])
-        await useHttp<any>(`products/category/${id}`, {
-            onFetchResponse: ({response}) => {
+        console.log('**');
+        const {data, error, pending, execute} = await useHttp<any>(`products/category/${id}`, {
+            immediate: false,
+            watch: false,
+            /*onFetchResponse: ({response}) => {
                 console.log(response)
-                if (response.status === 200) cat.value = response._data
-            }
+                if (response.status === 200) cat.value = response._data*/
         });
-        return cat
+        await execute();
+        if (error.value) {
+            console.log(error.value);
+            return false;
+        }
+
+        return data
     }
 
     function _findCategory(id: number, listCategories: Category[]) {

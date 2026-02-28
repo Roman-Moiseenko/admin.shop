@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import type {Category} from "~/stores/categories";
+import type {Category} from "~/stores/products/categories";
 
 export type TextParameter = {
     id: number;

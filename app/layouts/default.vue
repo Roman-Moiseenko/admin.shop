@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {useCategoriesStore} from "~/stores/categories";
+import {useCategoriesStore} from "~/stores/products/categories";
 
 definePageMeta({
   middleware: ['auth'],
