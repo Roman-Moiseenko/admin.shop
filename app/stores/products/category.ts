@@ -20,7 +20,6 @@ export const useCategoryStore = defineStore('category', () => {
         }
         category.value = data.value
         return true
-
     }
     return {
         category,

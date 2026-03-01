@@ -81,10 +81,8 @@ function handleDelete(id: number) {
 </script>
 
 <template>
-  <h1 class="mb-3 font-600 text-3xl">
-    <UIcon name="i-lucide-variable"/>
-    Параметры текстовые
-  </h1>
+  <AppTitle icon="i-lucide-variable" name="Параметры текстовые" />
+
   <div>
     <UButton label="Добавить параметр" color="secondary" @click="handleCreate"/>
   </div>

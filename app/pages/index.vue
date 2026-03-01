@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type {BreadcrumbItem} from "#ui/components/Breadcrumb.vue";
+
 definePageMeta({
   middleware: ['auth'],
   //layout: 'default'
@@ -8,12 +10,14 @@ const auth = useAuthStore();
 
 const open = ref(false);
 
+
 useSeoMeta({
   title: 'Home',
 })
 </script>
 
 <template>
+
   <div class="grid grid-cols-12 gap-6">
     <div class="col-span-12 lg:col-span-3">
       <UCard>

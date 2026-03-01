@@ -3,6 +3,7 @@ import * as z from 'zod'
 
 import type {FormSubmitEvent} from "#ui/types";
 import {type CategoryCreate, useCategoriesStore} from "~/stores/products/categories";
+import type {BreadcrumbItem} from "#ui/components/Breadcrumb.vue";
 
 definePageMeta({
   middleware: ['auth'],
@@ -10,9 +11,20 @@ definePageMeta({
 useHead({
   title: "Категории товаров"
 })
-
+const items = ref<any[]>([
+  {
+    icon: 'i-lucide-layout-dashboard',
+    to: '/'
+  },
+  {
+    label: 'Магазин',
+    to: '/products'
+  },
+  {
+    label: 'Категории',
+  },
+])
 const storeCategory = useCategoriesStore()
-
 
 type Schema = z.output<typeof schema>
 
@@ -32,6 +44,7 @@ const schema = z.object({
 const formModal = useTemplateRef('formModal')
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
+  showDialog.value = false
   storeCategory.create(form.value)
 }
 
@@ -42,10 +55,9 @@ function handleCreate() {
 </script>
 
 <template>
-  <h1 class="mb-3 font-600 text-3xl">
-    <UIcon name="i-lucide-folder-tree"/>
-    Категории
-  </h1>
+
+  <AppTitle icon="i-lucide-folder-tree" name="Категории" />
+
   <div>
     <UButton label="Добавить категорию" color="secondary" @click="handleCreate"/>
   </div>
