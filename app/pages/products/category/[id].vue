@@ -1,8 +1,4 @@
 <script setup lang="ts">
-
-//import {useLockStore} from "~/stores/lock";
-
-//import {useCategoriesStore} from "~/stores/products/categories";
 import {useCategoryStore} from "~/stores/products/category";
 
 const $route = useRoute()

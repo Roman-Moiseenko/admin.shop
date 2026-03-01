@@ -1,11 +1,6 @@
 <script setup lang="ts">
-import * as z from 'zod'
 import type {TableColumn} from "#ui/components/Table.vue";
 import {ElementActive} from "#components";
-import UDeleteEntityModal from "~/composables/UDeleteEntityModal.vue";
-import {useDeleteEntity} from '~/composables/useDeleteEntity';
-import type {FormSubmitEvent} from "#ui/types";
-import {Schema} from "zod/v3";
 import {type TextParameter, useParametersStore} from "~/stores/products/parameters";
 definePageMeta({
   middleware: ['auth'],
@@ -13,17 +8,9 @@ definePageMeta({
 useHead({
   title: "Текстовые параметры"
 })
-type Schema = z.output<typeof schema>
-const auth = useAuthStore();
-//const {data, status, refresh: OnReloadParameters} = useHttp<any>("products/parameter");
-//const loading = computed(() => status.value === 'pending');
-const storeParameters = useParametersStore()
-/*
-watch(status, async (n, q) => {
-  if (n === 'success') console.log(data.value)
-})
-*/
 
+const auth = useAuthStore();
+const storeParameters = useParametersStore()
 const columns: TableColumn<TextParameter>[] = [
   {
     accessorKey: 'id',
@@ -46,69 +33,39 @@ const columns: TableColumn<TextParameter>[] = [
     accessorKey: 'is_category',
     header: 'Для категорий',
     cell: ({row}) => {
-      return h(ElementActive, {active: row.getValue('is_category')})
+      return h(ElementActive, {active: Boolean(row.getValue('is_category'))})
     }
   },
   {
     accessorKey: 'is_product',
     header: 'Для товаров',
     cell: ({row}) => {
-      return h(ElementActive, {active: row.getValue('is_product')})
+      return h(ElementActive, {active: Boolean(row.getValue('is_product'))})
     }
   },
   {
     accessorKey: 'is_group',
     header: 'Для групп',
     cell: ({row}) => {
-      return h(ElementActive, {active: row.getValue('is_group')})
+      return h(ElementActive, {active: Boolean(row.getValue('is_group'))})
     }
   },
   {
     id: 'action'
   }
 ]
-const showDialog = ref(false)
-
-
-const schema = z.object({
-  name: z.string('Поле обязательно'),
-  slug: z.string('Ссылка обязательна'),
-})
-
-const getInitialFormState = () => (<TextParameter>{
-  id: null,
-  name: null,
-  slug: null,
-  description: null,
-  is_category: false,
-  is_group: false,
-  is_product: false,
-});
-
-const form = ref<TextParameter>(getInitialFormState())
 
 const showDelete = ref(false)
 const id_delete = ref(0)
 
+const modalUpdate = useTemplateRef('parameter-update')
+const modalCreate = useTemplateRef('parameter-create')
 function handleUpdate(row) {
-  form.value = {...row.original}
-  showDialog.value = true
+  modalUpdate.value.showEdit({...row.original})
 }
 
 function handleCreate() {
-  form.value = getInitialFormState()
-  showDialog.value = true
-}
-
-const formModal = useTemplateRef('formModal')
-
-async function onSubmit(event: FormSubmitEvent<Schema>) {
-  if (form.value.id === null) {
-    storeParameters.create(form.value)
-  } else {
-    storeParameters.update(form.value.id, form.value)
-  }
-  showDialog.value = false
+  modalCreate.value.showEdit()
 }
 
 function deleteParameter(v: boolean) {
@@ -154,37 +111,9 @@ function handleDelete(id: number) {
       </UButton>
     </template>
   </UTable>
-  <UModal v-model:open="showDialog" title="Текстовый параметр" :dismissible="false">
-    <template #body>
-      <UForm :schema="schema" :state="form" ref="formModal" @submit="onSubmit">
-        <UFormField label="Параметр" name="name">
-          <UInput v-model="form.name" class="w-full" placeholder="Название параметра"/>
-        </UFormField>
 
-        <UFormField label="Ссылка" name="slug">
-          <UInput v-model="form.slug" class="w-full" placeholder="Ссылка параметра"/>
-        </UFormField>
-        <UFormField label="Описание">
-          <UTextarea v-model="form.description" class="w-full" :rows="3"/>
-        </UFormField>
-
-          <UCheckbox v-model="form.is_category" label="Для категорий" name="is1"/>
-
-        <UCheckbox v-model="form.is_group" label="Для групп"/>
-        <UCheckbox v-model="form.is_product" label="Для товаров"/>
-
-      </UForm>
-    </template>
-    <template #footer="{ close }">
-      <UButton label="Отмена" color="neutral" variant="outline" @click="showDialog = false"/>
-      <UButton v-if="form.id === null && auth.can('create product')"
-               label="Добавить" color="secondary"
-               @click="formModal.submit()"/>
-      <UButton v-if="form.id !== null && auth.can('edit product')"
-               label="Сохранить" color="secondary"
-                @click="formModal.submit()"/>
-    </template>
-  </UModal>
+  <ProductParameterCreate ref="parameter-create" />
+  <ProductParameterUpdate ref="parameter-update" />
 
   <ElementDeleteModal v-model="showDelete" name="категорию" @confirmation="deleteParameter" >
     <template #body>

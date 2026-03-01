@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
 import type {Category} from "~/stores/products/categories";
+import * as z from 'zod'
 
 export type TextParameter = {
     id: number;
@@ -16,6 +17,21 @@ export const useParametersStore = defineStore('parameters', () => {
     const toast = useToast();
     const {data: parameters, status, refresh} = useHttp<TextParameter[]>("products/parameter");
     const loading = computed(() => status.value === 'pending');
+
+    const getInitialFormState = () => (<TextParameter>{
+        id: null,
+        name: null,
+        slug: null,
+        description: null,
+        is_category: false,
+        is_group: false,
+        is_product: false,
+    });
+    const schemaValidate = z.object({
+        name: z.string('Поле обязательно'),
+        slug: z.string('Ссылка обязательна'),
+    })
+
     async function reloadAndToast(status: number) {
         if (status === 200) {
             toast.add({ title: 'Обновление данных ...', icon: 'i-heroicons-arrow-path-solid', id: 'reloading', color: 'warning' });
@@ -70,6 +86,8 @@ export const useParametersStore = defineStore('parameters', () => {
         findParameter,
         create,
         update,
-        remove
+        remove,
+        getInitialFormState,
+        schemaValidate
     }
 })

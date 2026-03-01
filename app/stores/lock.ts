@@ -75,7 +75,7 @@ export const useLockStore = defineStore('lock', () => {
 
     const acquireLock = async (entity, entity_id) => {
         currentLock.value.errorMessage = null; // Сбрасываем ошибки
-        const {data, error, pending, execute} = await useHttp<LockStatus>(`/lock/set`, {
+        const {data, error, status, execute} = await useHttp<LockStatus>(`/lock/set`, {
             method: 'POST',
             body: {
                 entity: entity,
@@ -88,24 +88,31 @@ export const useLockStore = defineStore('lock', () => {
             await execute();
 
             if (error.value) {
-                if (error.value.status === 409) { // Conflict - ресурс заблокирован другим
-                    currentLock.value = {
-                        ...currentLock.value,
-                        locked: true,
-                        lockedBy: data.value.lockedBy || 'Неизвестный',
-                        lockedAt: data.value.lockedAt || 'недавно',
-                        entity: entity,
-                        entity_id: entity_id,
-                        errorMessage: data.value.message,
-                    };
-                } else {
-                    currentLock.value.errorMessage = data.value.message || `Не удалось заблокировать ${entity}.`;
-                    toast.add({
-                        title: currentLock.value.errorMessage,
-                        icon: 'i-heroicons-x-circle-solid',
-                        color: 'error'
-                    });
-                }
+                currentLock.value.errorMessage = data.value.message || `Не удалось заблокировать ${entity}.`;
+                toast.add({
+                    title: currentLock.value.errorMessage,
+                    icon: 'i-heroicons-x-circle-solid',
+                    color: 'error'
+                });
+                return false;
+            }
+
+            //Сервер не дал блокировку
+            if (!data.value.locked) {
+                currentLock.value = {
+                    ...currentLock.value,
+                    locked: true,
+                    lockedBy: data.value.lockedBy || 'Неизвестный',
+                    lockedAt: data.value.lockedAt || 'недавно',
+                    entity: entity,
+                    entity_id: entity_id,
+                    errorMessage: data.value.message,
+                };
+                toast.add({
+                    title: currentLock.value.errorMessage,
+                    icon: 'i-heroicons-x-circle-solid',
+                    color: 'error'
+                });
                 return false;
             }
             // Успешно заблокировано или блокировка обновлена
@@ -118,8 +125,8 @@ export const useLockStore = defineStore('lock', () => {
                 errorMessage: null,
             };
             return true;
-        } catch (error) {
-            currentLock.value.errorMessage = `Ошибка связи с сервером при блокировке: ${error.message}`;
+        } catch (e) {
+            currentLock.value.errorMessage = `Ошибка связи с сервером при блокировке: ${e.message}`;
             toast.add({
                 title: currentLock.value.errorMessage,
                 icon: 'i-heroicons-x-circle-solid',
@@ -130,6 +137,7 @@ export const useLockStore = defineStore('lock', () => {
     };
 
     const releaseLock = async () => {
+        //console.log()
         if (!currentLock.value.locked || currentLock.value.lockedBy !== user.name) {
             // Блокировки нет или она не наша - ничего не делаем
             return;
