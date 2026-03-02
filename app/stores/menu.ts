@@ -50,16 +50,18 @@ export const useMenuStore = defineStore('menu', () => {
             id: 'products',
             label: 'Products',
             icon: 'i-lucide-package',
-            active: true,
+            //active: true,
             to: "/products",
             children: [
                 {
+                    id: 'product',
                     label: 'Товары',
                     description: 'Номенклатура товаров магазина',
                     icon: 'i-lucide-package-open',
                     to: "/products/product",
                 },
                 {
+                    id: 'category',
                     label: 'Категории',
                     description: 'Каталог всех категорий',
                     icon: 'i-lucide-folder-tree',
@@ -67,24 +69,28 @@ export const useMenuStore = defineStore('menu', () => {
                 },
 
                 {
+                    id: 'attribute',
                     label: 'Атрибуты',
                     description: 'Атрибуты категорий',
                     icon: 'i-lucide-combine',
                     to: "/products/attribute",
                 },
                 {
+                    id: 'tag',
                     label: 'Метки',
                     description: 'Список тегов (меток) товаров',
                     icon: 'i-lucide-tags',
                     to: "/products/tag",
                 },
                 {
+                    id: 'brand',
                     label: 'Бренды',
                     description: 'Список брендов товаров',
                     icon: 'i-lucide-copyright',
                     to: "/products/brand",
                 },
                 {
+                    id: 'parameter',
                     label: 'Параметры',
                     description: 'Текстовые параметры для категорий, групп и товаров',
                     icon: 'i-lucide-variable',
@@ -94,22 +100,27 @@ export const useMenuStore = defineStore('menu', () => {
             disabled: !auth.can('view product')
         },
         {
+            id: 'sales',
             label: "Sales",
             icon: 'i-lucide-coins',
+            to: '/sales',
             children: [
                 {
+                    id: 'order',
                     label: 'Orders',
                     description: 'Текущие заказы',
                     icon: 'i-lucide-shopping-cart',
                     to: "/",
                 },
                 {
-                    label: 'Users',
+                    id: 'client',
+                    label: 'Clients',
                     description: 'Клиенты магазина',
                     icon: 'i-lucide-users',
                     to: "/",
                 },
                 {
+                    id: 'arhive',
                     label: 'Arhive',
                     description: 'Архив заказов (выполненные или отмененные)',
                     icon: 'i-lucide-archive',
@@ -120,34 +131,40 @@ export const useMenuStore = defineStore('menu', () => {
         },
 
         {
+            id: 'settings',
             label: 'Settings',
             icon: 'i-lucide-settings',
             children: [
                 {
+                    id: 'common',
                     label: 'Common',
                     //description: 'Текущие заказы',
                     //  icon: 'i-lucide-shopping-cart',
                     to: "/",
                 },
                 {
+                    id: 'website',
                     label: 'Website',
                     //description: 'Текущие заказы',
                     //  icon: 'i-lucide-shopping-cart',
                     to: "/",
                 },
                 {
+                    id: 'email',
                     label: 'Email',
                     //description: 'Текущие заказы',
                     //  icon: 'i-lucide-shopping-cart',
                     to: "/",
                 },
                 {
+                    id: 'image',
                     label: 'Images',
                     //description: 'Текущие заказы',
                     //  icon: 'i-lucide-shopping-cart',
                     to: "/",
                 },
                 {
+                    id: 'guide',
                     label: 'Guide',
                     //description: 'Текущие заказы',
                     //  icon: 'i-lucide-shopping-cart',
@@ -157,16 +174,19 @@ export const useMenuStore = defineStore('menu', () => {
             disabled: !auth.can('view settings')
         },
         {
+            id: 'website',
             label: 'WebSite',
             icon: 'i-lucide-globe',
             children: [
                 {
+                    id: 'page',
                     label: 'Pages',
                     //description: 'Текущие заказы',
                     //  icon: 'i-lucide-shopping-cart',
                     to: "/",
                 },
                 {
+                    id: 'menu',
                     label: 'Menu',
                     //description: 'Текущие заказы',
                     //  icon: 'i-lucide-shopping-cart',
@@ -177,11 +197,13 @@ export const useMenuStore = defineStore('menu', () => {
         },
 
         {
+            id: 'feedback',
             label: 'Feedback',
             icon: 'i-lucide-messages-square',
 
             children: [
                 {
+                    id: 'email',
                     label: 'Email',
                     icon: 'i-lucide-mail',
                 },
@@ -191,6 +213,7 @@ export const useMenuStore = defineStore('menu', () => {
         },
 
         {
+            id: 'help',
             label: 'Help',
             icon: 'i-lucide-circle-help',
             disabled: true
@@ -202,6 +225,12 @@ export const useMenuStore = defineStore('menu', () => {
             if (items[i].id === id) return items[i];
         }
         return undefined
+    }
+    function rootItems() {
+
+        for (let i= 0; i < items.length; i++) {
+
+        }
     }
     return {
         items,

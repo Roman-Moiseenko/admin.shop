@@ -6,22 +6,21 @@ const menu = useMenuStore();
 const userItems = menu.userItems
 const items = menu.items
 const isSideOpen = ref(false);
-
+const subMenu = ref(<any>[])
 const route = useRoute();
 
 const breadcrumbs = ref([])
+
+const firstRoute = ref('')
+const secondRoute = ref('')
 /*
 watch(() => breadcrumbs.value, (nv) => {
   console.log(nv);
 })
 */
 onMounted(() => {
-  console.log('onMounted');
   watch(() => route.path, async (newPath) => {
-    const url = `/breadcrumbs`
-
-
-    const {data, status} = await useHttp<any>(url, {
+    const {data, status} = await useHttp<any>(`/breadcrumbs`, {
       method: 'POST',
       body: {
         route: newPath
@@ -31,31 +30,54 @@ onMounted(() => {
         breadcrumbs.value = response._data // if (response.status === 200)
       }
     })
-   //TODO если status = idle то запустить интервал на 1,5с и запустить useHttp повторно
+    //TODO если status = idle то запустить интервал на 1,5с и запустить useHttp повторно
 
+    const arr = route.path.split('/').filter(v => v !== '')
+    firstRoute.value = arr[0] ?? ''
+    secondRoute.value = arr[1] ?? ''
+    subMenu.value = menu.getItem(firstRoute.value).children ?? null
+    //console.log(subMenu.value)
   }, {immediate: true});
 })
+
+
 onBeforeUpdate(() => {
   console.log('onBeforeUpdate');
 })
 </script>
 <template>
   <header
-      class="bg-background/75 backdrop-blur -mb-px sticky top-0 z-50 border-b border-dashed border-gray-200/80 dark:border-gray-800/80"
+      class="bg-background/75 backdrop-blur -mb-px sticky top-0 z-50 border-b border-dashed border-gray-200/80 dark:border-gray-800/80 pt-1"
   >
 
     <UContainer class="flex items-center justify-between gap-3 h-16 py-2">
       <AppLogo class="lg:flex-1"/>
       <UPopover mode="hover">
-        <UButton label="..." color="neutral" variant="subtle" />
+        <UButton label="..." color="neutral" variant="subtle"/>
         <template #content>
           <div class="p-2">
-          <UBreadcrumb :items="breadcrumbs" class="lg:flex-1"/>
+            <UBreadcrumb :items="breadcrumbs" class="lg:flex-1"/>
           </div>
         </template>
       </UPopover>
-      <UNavigationMenu orientation="horizontal" :items="items" class="hidden lg:block"/>
+      <UContainer class="max-w-7xl">
+        <UNavigationMenu orientation="horizontal" :items="items" class="sm:hidden"/>
+        <div class="hidden lg:block">
+          <div>
+            <template v-for="item in items">
+              <UButton :label="item.label" :to="item.to" :icon="item.icon" color="secondary"
+                       :variant="item.id !== firstRoute ? 'outline' : 'solid'"/>
+            </template>
+          </div>
+          <div>
+            <template v-for="item in subMenu" :key="item.id">
+              <UButton :label="item.label" :to="item.to" :icon="item.icon" color="info"
+                       :variant="item.id !== secondRoute ? 'ghost' : 'soft'"/>
+            </template>
+          </div>
 
+        </div>
+      </UContainer>
       <div class="flex items-center justify-end gap-3 lg:flex-1">
         <AppTheme/>
 
