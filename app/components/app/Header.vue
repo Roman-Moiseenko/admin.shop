@@ -26,6 +26,7 @@ onMounted(() => {
       body: {
         route: newPath
       },
+      server: false,
       onFetchResponse({response}) {
         breadcrumbs.value = response._data // if (response.status === 200)
       }

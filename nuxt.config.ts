@@ -11,7 +11,6 @@ export default defineNuxtConfig({
         server: {
             allowedHosts: ["localhost", "127.0.0.1"],
         },
-
     },
 
     ui: {
@@ -26,14 +25,14 @@ export default defineNuxtConfig({
     telemetry: true,
 
     $development: {
-        ssr: true,
+        ssr: false,
         devtools: {
             enabled: true,
         },
     },
 
     $production: {
-        ssr: true,
+        ssr: false,
     },
 
     app: {
