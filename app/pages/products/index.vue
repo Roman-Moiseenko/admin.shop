@@ -14,8 +14,8 @@ const items = ref<any[]>([
 </script>
 
 <template>
-  <UBreadcrumb :items="items"/>
-  Страница Магазина
+  <AppTitle icon="i-lucide-package" name="Страница Магазина" />
+
 </template>
 
 <style scoped>

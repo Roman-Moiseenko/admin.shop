@@ -7,14 +7,52 @@ const userItems = menu.userItems
 const items = menu.items
 const isSideOpen = ref(false);
 
+const route = useRoute();
+
+const breadcrumbs = ref([])
+/*
+watch(() => breadcrumbs.value, (nv) => {
+  console.log(nv);
+})
+*/
+onMounted(() => {
+  console.log('onMounted');
+  watch(() => route.path, async (newPath) => {
+    const url = `/breadcrumbs`
+
+
+    const {data, status} = await useHttp<any>(url, {
+      method: 'POST',
+      body: {
+        route: newPath
+      },
+      onFetchResponse({response}) {
+        breadcrumbs.value = response._data // if (response.status === 200)
+      }
+    })
+   //TODO если status = idle то запустить интервал на 1,5с и запустить useHttp повторно
+
+  }, {immediate: true});
+})
+onBeforeUpdate(() => {
+  console.log('onBeforeUpdate');
+})
 </script>
 <template>
   <header
       class="bg-background/75 backdrop-blur -mb-px sticky top-0 z-50 border-b border-dashed border-gray-200/80 dark:border-gray-800/80"
   >
+
     <UContainer class="flex items-center justify-between gap-3 h-16 py-2">
       <AppLogo class="lg:flex-1"/>
-
+      <UPopover mode="hover">
+        <UButton label="..." color="neutral" variant="subtle" />
+        <template #content>
+          <div class="p-2">
+          <UBreadcrumb :items="breadcrumbs" class="lg:flex-1"/>
+          </div>
+        </template>
+      </UPopover>
       <UNavigationMenu orientation="horizontal" :items="items" class="hidden lg:block"/>
 
       <div class="flex items-center justify-end gap-3 lg:flex-1">

@@ -49,15 +49,10 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div v-if="!category">
-    <UProgress  :max="['Загрузка...', 'Готово']" />
-    <Placeholder class="h-32" />
-  </div>
-  <template v-else>
-    <UBreadcrumb :items="items"/>
+  <AppPageWithLoader v:model="category">
     <AppTitle :name="category.name" />
     {{ category?.name }}
-  </template>
+  </AppPageWithLoader>
 </template>
 
 <style scoped>

@@ -8,7 +8,7 @@ definePageMeta({
 </script>
 
 <template>
-  <AppTitle icon="i-lucide-package" name="Товары" />
+  <AppTitle icon="i-lucide-package-open" name="Товары" />
 </template>
 
 <style scoped>
