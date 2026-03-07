@@ -35,7 +35,8 @@ onMounted(() => {
     const arr = route.path.split('/').filter(v => v !== '')
     firstRoute.value = arr[0] ?? ''
     secondRoute.value = arr[1] ?? ''
-    subMenu.value = menu.getItem(firstRoute.value).children ?? null
+    subMenu.value = menu.getItem(firstRoute.value)?.children ?? null
+   // console.log(firstRoute.value , subMenu.value)
     //console.log(subMenu.value)
   }, {immediate: true});
 })
@@ -63,13 +64,13 @@ onBeforeUpdate(() => {
       <UContainer class="max-w-7xl">
         <UNavigationMenu orientation="horizontal" :items="items" class="sm:hidden"/>
         <div class="hidden lg:block">
-          <div>
+          <div class="align-top">
             <template v-for="item in items">
-              <UButton :label="item.label" :to="item.to" :icon="item.icon" color="secondary"
+              <UButton :label="item.label" :to="item.to" :icon="item.icon" color="secondary" class="ml-1"
                        :variant="item.id !== firstRoute ? 'outline' : 'solid'"/>
             </template>
           </div>
-          <div>
+          <div class="align-bottom">
             <template v-for="item in subMenu" :key="item.id">
               <UButton :label="item.label" :to="item.to" :icon="item.icon" color="info"
                        :variant="item.id !== secondRoute ? 'ghost' : 'soft'"/>

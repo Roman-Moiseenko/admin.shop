@@ -1,5 +1,4 @@
 import {defineStore} from 'pinia'
-import type {Category} from "~/stores/products/categories";
 import * as z from 'zod'
 
 export type TextParameter = {
@@ -10,7 +9,6 @@ export type TextParameter = {
     is_category: boolean;
     is_product: boolean;
     is_group: boolean;
-
 }
 
 export const useParametersStore = defineStore('parameters', () => {

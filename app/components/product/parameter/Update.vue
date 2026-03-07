@@ -30,7 +30,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 function onClose() {
   show.value = false
-  //lock.stopHeartbeat()
   lock.releaseLock()
 }
 
